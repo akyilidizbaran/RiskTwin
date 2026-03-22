@@ -10,6 +10,8 @@
 >
 > RiskTwin bir hackathon projesi olarak geliştirilmiştir. Bu repository, ürünün web uygulamasını ve demo akışını göstermek için hazırlanmış paylaşılabilir paketi içerir. Tüm dahili çalışma notları, tasarım iterasyonları, yardımcı araçlar ve bazı geliştirme varlıkları bu repoda yer almaz.
 
+Bu repo aynı zamanda Vercel üzerinde yayınlanabilecek statik website dosyalarını içerir.
+
 ## RiskTwin Nedir?
 
 RiskTwin; bina, parsel, deprem tehlikesi ve temel yapı parametrelerini tek karar yüzeyinde birleştiren bir ön değerlendirme platformudur. Amaç; mühendislik kararının yerine geçmek değil, doğru binayı, doğru projeyi ve doğru inceleme sırasını daha erken ve daha okunabilir biçimde belirlemektir.
@@ -160,6 +162,11 @@ Tasarım tarafında Stitch destekli bir **design workflow exists** yaklaşımı 
 
 ```text
 risktwin/
+├── index.html
+├── site.css
+├── favicon.svg
+├── vercel.json
+├── .vercelignore
 ├── app/
 │   ├── app.py
 │   ├── pages/
@@ -189,6 +196,25 @@ pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
+Canlı demo akışı için yerel adres:
+
+```text
+http://localhost:8505
+```
+
+## Vercel Website Deploy
+
+Bu repository, Vercel Hobby planında doğrudan deploy edilebilecek statik website dosyalarını içerir.
+
+Kurulum akışı:
+
+1. Repo'yu Vercel'e import et
+2. Framework Preset alanını otomatik bırak veya `Other` seç
+3. Root dizini repo kökü olarak bırak
+4. Deploy et
+
+Vercel tarafına yalnızca website için gereken statik dosyalar gönderilir. Bu amaçla `.vercelignore` dosyası kullanılır.
+
 ## Takım
 
 **Takım Adı:** Aerolith Systems
@@ -212,11 +238,9 @@ RiskTwin'in yarışma sonrası büyüme yönleri:
 
 ## Linkler
 
-- **Website:** [PLACEHOLDER_WEBSITE_LINK](https://example.com/risktwin-website)
-- **Canlı Demo:** [PLACEHOLDER_DEMO_LINK](https://example.com/risktwin-demo)
-- **Video / Demo Sunumu:** [PLACEHOLDER_VIDEO_LINK](https://example.com/risktwin-video)
-- **Sunum / Pitch Deck:** [PLACEHOLDER_PITCH_LINK](https://example.com/risktwin-pitch)
-- **İletişime Geç:** [PLACEHOLDER_CONTACT_LINK](https://example.com/risktwin-contact)
+- **Website:** [PLACEHOLDER_VERCEL_LINK](https://your-vercel-project.vercel.app)
+- **Canlı Demo:** [http://localhost:8505](http://localhost:8505)
+- **İletişime Geç:** [akyilidizbaran@gmail.com](mailto:akyilidizbaran@gmail.com)
 
 ## Yayın Kontrol Listesi
 
