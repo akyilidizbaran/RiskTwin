@@ -6,9 +6,9 @@
 
 ## Durum Notu
 
-> **Gizlilik / Yarışma Notu**
+> **Paylaşım Notu**
 >
-> RiskTwin bir hackathon projesi olarak geliştirilmiştir. Yarışma kapsamı tamamlanana kadar kodlar, veriler ve ilgili proje varlıkları paylaşılmayacaktır. Bu aşamada repo ve veri erişimi private tutulmaktadır. Repo kamuya açıldığında erişim politikası ve paylaşım kapsamı ayrıca güncellenecektir.
+> RiskTwin bir hackathon projesi olarak geliştirilmiştir. Bu repository, ürünün web uygulamasını ve demo akışını göstermek için hazırlanmış paylaşılabilir paketi içerir. Tüm dahili çalışma notları, tasarım iterasyonları, yardımcı araçlar ve bazı geliştirme varlıkları bu repoda yer almaz.
 
 ## RiskTwin Nedir?
 
@@ -132,8 +132,6 @@ RiskTwin MVP sürümünde riski aşağıdaki temel faktörler üzerinden değerl
 
 ## Veri Durumu
 
-Bu aşamada proje içindeki veri varlıkları da private kapsamda değerlendirilmelidir.
-
 RiskTwin MVP mantığında kullanılan veri aileleri:
 
 - deprem tehlike verisi
@@ -142,7 +140,7 @@ RiskTwin MVP mantığında kullanılan veri aileleri:
 - bağlam / nüfus / referans katmanları
 - model eğitimi için hazırlanan demo ve sentetik veri akışları
 
-> README düzeyinde veri erişim yolu veya paylaşım bağlantısı verilmemektedir. Yarışma süresince veri varlıkları public kullanım için açılmayacaktır.
+> Bu repository içinde yalnızca web uygulamasını çalıştırmak için gerekli demo ve örnek veri varlıkları paylaşılmıştır. Daha geniş veri hazırlık süreci ve dahili çalışma materyalleri bu repoya dahil edilmemiştir.
 
 ## Tasarım ve Deneyim Yaklaşımı
 
@@ -173,17 +171,14 @@ risktwin/
 │   └── components/
 ├── src/
 ├── data/
-├── docs/
-├── design-system/
-├── tools/
-├── tests/
 ├── models/
-└── outputs/
+├── README.md
+└── requirements.txt
 ```
 
 ## Kurulum ve Lokal Çalıştırma
 
-> Bu bölüm repo erişimi olan ekip içi kullanım içindir. Yarışma sürecindeki public paylaşım politikası ayrıca korunur.
+> Bu repo, paylaşılan web uygulama paketini lokal olarak ayağa kaldırmak için yeterli dosyaları içerir.
 
 ```bash
 git clone <REPO_URL>
@@ -192,12 +187,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 streamlit run app/app.py
-```
-
-Test çalıştırmak için:
-
-```bash
-python3 -m pytest tests/ -v
 ```
 
 ## Takım
@@ -234,13 +223,13 @@ RiskTwin'in yarışma sonrası büyüme yönleri:
 GitHub'a pushlamadan önce şu maddeler kontrol edilmelidir:
 
 - README içindeki placeholder linkler gerçek bağlantılarla güncellendi mi?
-- Yarışma süresince private kalması gereken dosyalar repo dışında tutuldu mu?
+- Paylaşılmaması gereken dahili dosyalar repo dışında tutuldu mu?
 - Gizli erişim bilgileri veya servis akışları README ve commit geçmişinde yer almıyor mu?
-- Veri paylaşım sınırı README ile tutarlı mı?
+- Repo içeriği ile README'deki paylaşım kapsamı tutarlı mı?
 - Public-facing açıklama metni ve repo açıklaması aynı mesaj ailesinde mi?
 
 ## Lisans
 
 **All rights reserved**
 
-Bu repository ve içindeki tüm proje çıktıları, yarışma süreci boyunca Aerolith Systems ve ilgili ekip üyelerinin kontrolünde saklı tutulur. Açık kaynak lisansı tanımlanmamıştır.
+Bu repository ve içindeki tüm proje çıktıları Aerolith Systems ve ilgili ekip üyelerinin kontrolündedir. Açık kaynak lisansı tanımlanmamıştır.
