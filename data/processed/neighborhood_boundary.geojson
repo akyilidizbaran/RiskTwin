@@ -1,0 +1,31 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {"source": "Sentetik demo veri - yaklaşık mahalle sınırları", "city": "İstanbul"},
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Moda", "district": "Kadıköy", "location_id": "LOC001"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.0230, 40.9840], [29.0300, 40.9840], [29.0300, 40.9880], [29.0230, 40.9880], [29.0230, 40.9840]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Tarlabaşı", "district": "Beyoğlu", "location_id": "LOC002"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.9750, 41.0330], [28.9810, 41.0330], [28.9810, 41.0370], [28.9750, 41.0370], [28.9750, 41.0330]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Merkez", "district": "Avcılar", "location_id": "LOC003"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.7180, 40.9770], [28.7250, 40.9770], [28.7250, 40.9810], [28.7180, 40.9810], [28.7180, 40.9770]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Sahil", "district": "Kartal", "location_id": "LOC004"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.1860, 40.8870], [29.1920, 40.8870], [29.1920, 40.8910], [29.1860, 40.8910], [29.1860, 40.8870]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Sultanahmet", "district": "Fatih", "location_id": "LOC005"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.9740, 41.0030], [28.9810, 41.0030], [28.9810, 41.0070], [28.9740, 41.0070], [28.9740, 41.0030]]]}
+    }
+  ]
+}

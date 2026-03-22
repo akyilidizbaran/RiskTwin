@@ -1,0 +1,31 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {"source": "Sentetik demo veri", "city": "İstanbul"},
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Moda Caddesi", "highway": "secondary", "district": "Kadıköy"},
+      "geometry": {"type": "LineString", "coordinates": [[29.0250, 40.9858], [29.0270, 40.9865], [29.0290, 40.9870]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Tarlabaşı Bulvarı", "highway": "primary", "district": "Beyoğlu"},
+      "geometry": {"type": "LineString", "coordinates": [[28.9760, 41.0345], [28.9780, 41.0352], [28.9800, 41.0358]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "E-5 Avcılar", "highway": "motorway", "district": "Avcılar"},
+      "geometry": {"type": "LineString", "coordinates": [[28.7200, 40.9785], [28.7220, 40.9790], [28.7240, 40.9795]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Kartal Sahil Yolu", "highway": "secondary", "district": "Kartal"},
+      "geometry": {"type": "LineString", "coordinates": [[29.1880, 40.8885], [29.1900, 40.8890], [29.1920, 40.8895]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Divan Yolu", "highway": "secondary", "district": "Fatih"},
+      "geometry": {"type": "LineString", "coordinates": [[28.9750, 41.0050], [28.9770, 41.0055], [28.9790, 41.0060]]}
+    }
+  ]
+}

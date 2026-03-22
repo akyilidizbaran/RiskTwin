@@ -1,0 +1,13 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {"source": "Sentetik demo veri", "city": "İstanbul"},
+  "features": [
+    {"type": "Feature", "properties": {"name": "Moda Parkı", "amenity": "park", "district": "Kadıköy"}, "geometry": {"type": "Point", "coordinates": [29.0258, 40.9865]}},
+    {"type": "Feature", "properties": {"name": "Kadıköy Devlet Hastanesi", "amenity": "hospital", "district": "Kadıköy"}, "geometry": {"type": "Point", "coordinates": [29.0280, 40.9850]}},
+    {"type": "Feature", "properties": {"name": "Tarlabaşı İlkokulu", "amenity": "school", "district": "Beyoğlu"}, "geometry": {"type": "Point", "coordinates": [28.9785, 41.0355]}},
+    {"type": "Feature", "properties": {"name": "Avcılar Meydanı", "amenity": "park", "district": "Avcılar"}, "geometry": {"type": "Point", "coordinates": [28.7215, 40.9795]}},
+    {"type": "Feature", "properties": {"name": "Kartal Marina", "amenity": "park", "district": "Kartal"}, "geometry": {"type": "Point", "coordinates": [29.1895, 40.8893]}},
+    {"type": "Feature", "properties": {"name": "Ayasofya Camii", "amenity": "place_of_worship", "district": "Fatih"}, "geometry": {"type": "Point", "coordinates": [28.9800, 41.0086]}},
+    {"type": "Feature", "properties": {"name": "Sultanahmet Camii", "amenity": "place_of_worship", "district": "Fatih"}, "geometry": {"type": "Point", "coordinates": [28.9773, 41.0054]}}
+  ]
+}

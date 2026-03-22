@@ -1,0 +1,6 @@
+location_id,city,district,neighborhood,population,density_note,source
+LOC001,İstanbul,Kadıköy,Moda,18500,Yüksek yoğunluk - sahil yerleşimi,TÜİK ADNKS 2023 tahmini
+LOC002,İstanbul,Beyoğlu,Tarlabaşı,12000,Çok yüksek yoğunluk - tarihi merkez,TÜİK ADNKS 2023 tahmini
+LOC003,İstanbul,Avcılar,Merkez,45000,Çok yüksek yoğunluk - toplu konut bölgesi,TÜİK ADNKS 2023 tahmini
+LOC004,İstanbul,Kartal,Sahil,28000,Yüksek yoğunluk - dönüşüm bölgesi,TÜİK ADNKS 2023 tahmini
+LOC005,İstanbul,Fatih,Sultanahmet,8500,Orta yoğunluk - tarihi yarımada,TÜİK ADNKS 2023 tahmini

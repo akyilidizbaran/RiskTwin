@@ -1,0 +1,70 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "Sentetik demo veri - gerçek OSM verisi değildir",
+    "generated_for": "RiskTwin MVP",
+    "city": "İstanbul"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN001", "name": "Moda Konut A", "floors": 5, "building_type": "konut", "district": "Kadıköy"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.0260, 40.9861], [29.0264, 40.9861], [29.0264, 40.9863], [29.0260, 40.9863], [29.0260, 40.9861]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN002", "name": "Moda Konut B", "floors": 3, "building_type": "konut", "district": "Kadıköy"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.0266, 40.9860], [29.0270, 40.9860], [29.0270, 40.9862], [29.0266, 40.9862], [29.0266, 40.9860]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN003", "name": "Tarlabaşı Ticari", "floors": 4, "building_type": "ticari", "district": "Beyoğlu"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.9775, 41.0350], [28.9779, 41.0350], [28.9779, 41.0352], [28.9775, 41.0352], [28.9775, 41.0350]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN004", "name": "Beyoğlu Ofis", "floors": 8, "building_type": "ofis", "district": "Beyoğlu"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.9780, 41.0349], [28.9784, 41.0349], [28.9784, 41.0351], [28.9780, 41.0351], [28.9780, 41.0349]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN005", "name": "Avcılar Konut A", "floors": 6, "building_type": "konut", "district": "Avcılar"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.7212, 40.9791], [28.7216, 40.9791], [28.7216, 40.9793], [28.7212, 40.9793], [28.7212, 40.9791]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN006", "name": "Avcılar Konut B", "floors": 10, "building_type": "konut", "district": "Avcılar"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.7218, 40.9790], [28.7222, 40.9790], [28.7222, 40.9793], [28.7218, 40.9793], [28.7218, 40.9790]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN007", "name": "Kartal Karma", "floors": 12, "building_type": "karma", "district": "Kartal"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.1888, 40.8889], [29.1892, 40.8889], [29.1892, 40.8891], [29.1888, 40.8891], [29.1888, 40.8889]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN008", "name": "Kartal Ofis Kulesi", "floors": 15, "building_type": "ofis", "district": "Kartal"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.1893, 40.8888], [29.1897, 40.8888], [29.1897, 40.8891], [29.1893, 40.8891], [29.1893, 40.8888]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN009", "name": "Sultanahmet Konut", "floors": 3, "building_type": "konut", "district": "Fatih"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.9766, 41.0053], [28.9770, 41.0053], [28.9770, 41.0055], [28.9766, 41.0055], [28.9766, 41.0053]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN010", "name": "Sultanahmet Ticari", "floors": 4, "building_type": "ticari", "district": "Fatih"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.9771, 41.0052], [28.9775, 41.0052], [28.9775, 41.0054], [28.9771, 41.0054], [28.9771, 41.0052]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN011", "name": "Avcılar Sanayi", "floors": 7, "building_type": "sanayi", "district": "Avcılar"},
+      "geometry": {"type": "Polygon", "coordinates": [[[28.7224, 40.9789], [28.7230, 40.9789], [28.7230, 40.9792], [28.7224, 40.9792], [28.7224, 40.9789]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {"id": "BIN012", "name": "Moda Okul", "floors": 4, "building_type": "egitim", "district": "Kadıköy"},
+      "geometry": {"type": "Polygon", "coordinates": [[[29.0255, 40.9864], [29.0261, 40.9864], [29.0261, 40.9867], [29.0255, 40.9867], [29.0255, 40.9864]]]}
+    }
+  ]
+}

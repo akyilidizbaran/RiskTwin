@@ -1,0 +1,6 @@
+location_id,location_name,city,district,lat,lon,hazard_level,hazard_score,source,notes
+LOC001,Kadıköy Moda,İstanbul,Kadıköy,40.9862,29.0262,high,75,AFAD,1. derece deprem bölgesi - Marmara fay hattına yakın
+LOC002,Beyoğlu Tarlabaşı,İstanbul,Beyoğlu,41.0351,28.9777,high,70,AFAD,1. derece deprem bölgesi - tarihi yapı yoğunluğu
+LOC003,Avcılar Merkez,İstanbul,Avcılar,40.9792,28.7214,high,90,AFAD,1999 depreminde en çok etkilenen bölge - sıvılaşma riski
+LOC004,Kartal Sahil,İstanbul,Kartal,40.8890,29.1890,high,68,AFAD,1. derece deprem bölgesi - dolgu zemin alanları mevcut
+LOC005,Fatih Sultanahmet,İstanbul,Fatih,41.0054,28.9768,high,72,AFAD,1. derece deprem bölgesi - tarihi yarımada
