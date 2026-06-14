@@ -1,195 +1,96 @@
 # RiskTwin
 
-**Açıklanabilir deprem riski ve proje uygunluk karar desteği için geliştirilen dijital twin MVP'si**
+**Açıklanabilir deprem riski, kentsel dönüşüm önceliklendirmesi ve görsel yapı envanteri zenginleştirme için Digital Twin karar destek platformu**
 
-> RiskTwin, deprem riski ve proje uygunluk kararlarını açıklanabilir skorlar, senaryo kıyası ve ML-ready mimariyle destekleyen bir karar destek platformudur. Hackathon kapsamında geliştirilen bu MVP; belediyeler, geliştiriciler ve teknik ekipler için kurumsal, izlenebilir, Türkiye odaklı ve ölçeklenebilir ön değerlendirme akışı sunar. MVP düzeyindedir
+RiskTwin, Türkiye'deki eksik ve parçalı yapı envanteri problemini deprem riski bağlamında ele alır. Projenin yeni araştırma hattı, dış cephe görüntülerinden ve street-level imagery kaynaklarından yapı envanterinde eksik kalan kritik bilgileri çıkarmayı; bu bilgileri belediye envanteri, hazard bağlamı ve afet sonrası gözlem verileriyle birleştirerek daha kapsamlı bir Digital Twin ortamı kurmayı hedefler.
 
-## Durum Notu
+Bu repo iki şeyi birlikte taşır:
 
-> **Paylaşım Notu**
->
-> RiskTwin bir hackathon projesi olarak geliştirilmiştir. Bu repository, ürünün web uygulamasını ve demo akışını göstermek için hazırlanmış paylaşılabilir paketi içerir. Tüm dahili çalışma notları, tasarım iterasyonları, yardımcı araçlar ve bazı geliştirme varlıkları bu repoda yer almaz.
+- Bugünkü `Streamlit` tabanlı RiskTwin MVP'si
+- Yeni `Facade Intelligence` araştırma ve POC planı
 
-## RiskTwin Nedir?
+## Ana Problem
 
-RiskTwin; bina, parsel, deprem tehlikesi ve temel yapı parametrelerini tek karar yüzeyinde birleştiren bir ön değerlendirme platformudur. Amaç; mühendislik kararının yerine geçmek değil, doğru binayı, doğru projeyi ve doğru inceleme sırasını daha erken ve daha okunabilir biçimde belirlemektir.
+Türkiye'de birçok bina, belediye yapı envanterlerinde eksik, güncel olmayan veya hiç bulunmayan bilgilerle temsil ediliyor. Bu eksikliği tamamen saha çalışmasıyla kapatmak pahalı, yavaş ve operasyonel olarak zor.
 
-Bu ürün özellikle şu soruya cevap vermek için tasarlanmıştır:
+RiskTwin'in yeni odağı:
 
-**"Bu yapı veya proje, mevcut koşullarda ne kadar riskli, ne kadar uygun ve ne kadar öncelikli?"**
+- görüntü işleme ve yapay zeka ile envanterde eksik kalan binaları ve bina özelliklerini tespit etmek
+- bu çıktıları mevcut yapı envanteriyle birleştirmek
+- mahalle, ada, parsel ve bina düzeyinde daha kapsamlı bir Digital Twin tabanı oluşturmak
+- kentsel dönüşüm önceliklendirmesi ve hayat koridoru planlamasına karar desteği sağlamak
 
-## Neden Önemli?
+## Yeni Araştırma Hattı
 
-Türkiye, yüksek sismik risk altında bulunan çok katmanlı bir yapı stoku ile karşı karşıya. Deprem tehlikesi, zemin koşulları, bina yaşı, taşıyıcı sistem ve müdahale seçenekleri çoğu zaman parçalı değerlendiriliyor. Sonuç olarak:
+Yeni hat doğrudan "bu bina yıkılır" kararı vermez. Amaç, dış cephe görüntülerinden görülebilir yapı sinyallerini çıkarıp bunları risk önceliklendirmesinde kullanılabilir hale getirmektir.
 
-- karar süreçleri yavaşlıyor
-- uzman bağımlılığı artıyor
-- saha önceliklendirmesi zorlaşıyor
-- proje ve güçlendirme alternatifleri sistematik kıyaslanamıyor
+Çekirdek yaklaşım:
 
-RiskTwin bu boşluğu kurumsal karar desteği odağıyla kapatır.
+- iki aşamalı sistem
+- confidence-aware tahmin
+- düşük güvenli örneklerde `unknown` ve `manual review`
+- resmi, açık, tahmin edilmiş ve bilinmeyen veri ayrımının kullanıcıya görünür olması
+- uzman kararının yerine geçmeyen, uzmanı önceleyen karar desteği
 
-## Öne Çıkan 3 Değer
+## POC Kararları
 
-### 1. Açıklanabilirlik
+İlk POC için sabitlenen kararlar:
 
-RiskTwin yalnızca skor üretmez; riskin neden yükseldiğini, hangi faktörlerin öne çıktığını ve hangi kararın neden önerildiğini görünür kılar.
+| Başlık | Karar |
+|---|---|
+| İlk şehir | İstanbul |
+| Yaklaşık kapsam | 100 bina |
+| Görsel veri | Açık street-level imagery veya kurumsal izinli görüntüler |
+| Görüntüleme | Çoklu açı |
+| Görsel-bina eşleme | Sistem tarafından çözülecek |
+| Etiket tipi | Post-event observed outcome |
+| Afet veri odağı | 6 Şubat depremi, uygun olursa 1999 ve Van depremi verileri |
+| Model davranışı | Her bina için tahmin zorunlu değil |
+| Düşük güvenli çıktı | `unknown` + `manual review` |
+| Karar seviyesi | Skor ve önceliklendirme; nihai karar uzmanlarda |
+| README tonu | Teknik araştırma + ürün stratejisi + jüri savunması hibriti |
 
-### 2. Kurumsal Karar Desteği
+## Dokümanlar
 
-Platform belediyeler, geliştiriciler ve teknik değerlendirme ekipleri için ortak bir karar dili üretir. Amaç estetik bir dashboard değil, operasyonel olarak kullanılabilir bir değerlendirme katmanıdır.
+Bu repo artık POC kararlarını ayrı dokümanlarda takip eder:
 
-### 3. ML-Ready Mimari
+- [Facade Intelligence POC Planı](docs/README_facade_intelligence_poc.md)
+- [Veri, Etiket ve Lisans Stratejisi](docs/README_data_label_strategy.md)
+- [Ürün Kapsamı ve Digital Twin Karar Çerçevesi](docs/README_product_scope_and_questions.md)
 
-Heuristic-first yaklaşım ile hemen çalışabilir durumdadır; veri derinliği arttıkça supervised model olgunlaşmasına açık bir mimari üzerine kuruludur.
+## Mevcut MVP
 
-## Kim İçin Geliştirildi?
-
-RiskTwin'in ana kullanıcı kitlesi:
-
-- Belediye risk değerlendirme ve kentsel dönüşüm ekipleri
-- Büyük geliştiriciler ve proje ekipleri
-- Yapı denetim ve teknik inceleme ekipleri
-- Afet yönetimi ve saha önceliklendirme karar vericileri
-- Jüri / hackathon değerlendirme kurulları
-
-## Web Uygulaması Neyi Gösteriyor?
-
-RiskTwin şu anda beş ana ekran üzerinden ürün akışını gösterir:
-
-### Proje Tanıtımı
-
-Ürünün neden var olduğunu, problemi nasıl çerçevelediğini, neyi çözdüğünü ve neden şimdi önemli olduğunu anlatan giriş ekranıdır.
-
-### Risk Analizi
-
-Bir yapı için parametre girişi, harita bağlamı, risk skoru, proje uygunluk skoru ve inceleme önceliği aynı akışta gösterilir.
-
-### Senaryo Karşılaştırma
-
-Güçlendirme, kat azaltma veya alternatif yapı kararlarının risk ve uygunluk üzerindeki etkisi karşılaştırmalı olarak sunulur.
-
-### Veri ve Metodoloji
-
-Skorlama mantığı, veri kaynağı görünürlüğü, ağırlık dağılımı ve ML hazırlık seviyesi teknik denetlenebilirlik odağıyla açıklanır.
-
-### Hakkında
-
-Ürünün stratejik amacı, hedef kullanıcıları, mimari yaklaşımı, teknik sınırları ve gelişim yönü özetlenir.
-
-## Ürün Akışı
-
-RiskTwin'in karar mantığı basit ama güçlü bir akış üzerine kuruludur:
+Mevcut uygulama hâlâ çalışır durumdadır ve şu akışı gösterir:
 
 1. Lokasyon ve yapı parametreleri alınır
 2. Deprem tehlikesi ve yapısal kırılganlık birlikte değerlendirilir
 3. Risk, uygunluk ve inceleme önceliği hesaplanır
-4. Doğal dil açıklama ile karar gerekçesi sunulur
+4. Türkçe doğal dil açıklama ile karar gerekçesi sunulur
 5. Alternatif senaryolar kıyaslanır
-6. Sonuç karar vericinin hızlı okuyacağı bir kurumsal arayüzde gösterilir
+6. Sonuç kurumsal karar arayüzünde gösterilir
 
-## Teknik Olarak Nasıl Çalışır?
+Teknik bileşenler:
 
-RiskTwin mimarisi dört ana katmandan oluşur:
+- `Streamlit` çok sayfalı ürün arayüzü
+- `Folium` harita katmanı
+- `Plotly` skor ve karşılaştırma görselleştirmeleri
+- heuristic scoring engine
+- scenario engine
+- explainability layer
+- ML-ready prediction layer
 
-```text
-Kullanıcı Katmanı
-Streamlit dashboard + Folium harita + Plotly görselleştirme
-
-İş Mantığı Katmanı
-Scoring engine + scenario engine + explainability katmanı
-
-ML Katmanı
-Feature engineering + eğitim pipeline + predict/fallback akışı
-
-Veri Katmanı
-Deprem tehlikesi + geospatial katmanlar + kullanıcı girdisi + demo veri
-```
-
-### Temel Teknik Bileşenler
-
-- `Streamlit`: çok sayfalı ürün arayüzü
-- `Folium`: lokasyon ve risk bağlamı harita katmanı
-- `Plotly`: skor ve karşılaştırma görselleştirmeleri
-- `Heuristic scoring engine`: açıklanabilir ön risk değerlendirmesi
-- `Scenario engine`: alternatif müdahale ve proje senaryoları
-- `Explainability layer`: Türkçe doğal dil açıklama üretimi
-- `ML pipeline`: feature engineering, eğitim ve prediction katmanı
-
-## Skorlama Yaklaşımı
-
-RiskTwin MVP sürümünde riski aşağıdaki temel faktörler üzerinden değerlendirir:
-
-| Faktör | Ağırlık | Rol |
-|--------|---------|-----|
-| Deprem Tehlikesi | %30 | Lokasyonun sismik tehlike düzeyi |
-| Zemin Sınıfı | %25 | Zemin koşullarının risk etkisi |
-| Bina Yaşı | %15 | Yönetmelik dönemi ve yaş kaynaklı kırılganlık |
-| Kat Sayısı | %15 | Yapısal talep ve taşıma zorlanması |
-| Taşıyıcı Sistem | %15 | Sistem dayanımı ve davranış kapasitesi |
-
-**Risk bantları:** `0-39 Düşük`, `40-64 Orta`, `65-100 Yüksek`
-
-## Veri Durumu
-
-RiskTwin MVP mantığında kullanılan veri aileleri:
-
-- deprem tehlike verisi
-- geospatial katmanlar
-- kullanıcı tarafından girilen yapı parametreleri
-- bağlam / nüfus / referans katmanları
-- model eğitimi için hazırlanan demo ve sentetik veri akışları
-
-> Bu repository içinde yalnızca web uygulamasını çalıştırmak için gerekli demo ve örnek veri varlıkları paylaşılmıştır. Daha geniş veri hazırlık süreci ve dahili çalışma materyalleri bu repoya dahil edilmemiştir.
-
-## Tasarım ve Deneyim Yaklaşımı
-
-RiskTwin yalnızca teknik olarak değil, deneyim açısından da kurumsal karar vericilere göre tasarlanmıştır.
-
-Arayüz yaklaşımı:
-
-- premium dark enterprise dashboard dili
-- yüksek bilgi yoğunluğunu sakin hiyerarşiyle sunan düzen
-- JetBrains Mono + IBM Plex Sans temelli teknik tipografi
-- harita, skor ve açıklama bloklarını tek karar ailede birleştiren kompozisyon
-- gösterişli AI görselleri yerine güven veren ürün dili
-
-Tasarım tarafında Stitch destekli bir **design workflow exists** yaklaşımı bulunmaktadır. Bu workflow, ürün ekranlarının görsel yönünü rafine etmek için kullanılmıştır; ancak erişim ve entegrasyon detayları bu README içinde paylaşılmamaktadır.
-
-## Klasör Yapısı
-
-```text
-risktwin/
-├── app/
-│   ├── app.py
-│   ├── pages/
-│   │   ├── home.py
-│   │   ├── risk_analysis.py
-│   │   ├── scenario.py
-│   │   ├── methodology.py
-│   │   └── about.py
-│   └── components/
-├── src/
-├── data/
-├── models/
-├── README.md
-└── requirements.txt
-```
-
-## Kurulum ve Lokal Çalıştırma
-
-> Bu repo, paylaşılan web uygulama paketini lokal olarak ayağa kaldırmak için yeterli dosyaları içerir.
+## Kurulum
 
 ```bash
-git clone <REPO_URL>
-cd risktwin
+git clone https://github.com/akyilidizbaran/RiskTwin.git
+cd RiskTwin
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
-Canlı demo akışı için yerel adres:
+Canlı lokal adres:
 
 ```text
 http://localhost:8505
@@ -199,37 +100,14 @@ http://localhost:8505
 
 **Takım Adı:** Aerolith Systems
 
-- **Baran Akyıldız** — Teknik Lider
-- **Elif Sena Önsöz** — Geospatial & Data Engineer
-- **Elif Güngen** — AI Application Engineer
-- **Burak Kılıç** — Mechanical Systems & Technical Validation Lead
+- **Baran Akyıldız** - Teknik Lider, AI/ML ve modelleme
+- **Elif Sena Önsöz** - Geospatial ve veri mühendisliği
+- **Elif Güngen** - AI uygulama, ürün deneyimi ve sunum
+- **Burak Kılıç** - Mekanik sistemler ve teknik doğrulama
 
-## Gelecek Vizyonu
+## Kritik Sınır
 
-RiskTwin'in yarışma sonrası büyüme yönleri:
-
-- çoklu şehir desteği
-- gerçek veri entegrasyonları
-- supervised model olgunlaşması
-- explainable AI derinleşmesi
-- toplu tarama ve operasyonel kullanım senaryoları
-- API / backend katmanı
-- daha geniş kurumsal entegrasyon kabiliyeti
-
-## Linkler
-
-- **Canlı Demo:** [http://localhost:8505](http://localhost:8505)
-- **İletişime Geç:** [akyilidizbaran@gmail.com](mailto:akyilidizbaran@gmail.com)
-
-## Yayın Kontrol Listesi
-
-GitHub'a pushlamadan önce şu maddeler kontrol edilmelidir:
-
-- README içindeki linkler ve iletişim bilgileri güncel mi?
-- Paylaşılmaması gereken dahili dosyalar repo dışında tutuldu mu?
-- Gizli erişim bilgileri veya servis akışları README ve commit geçmişinde yer almıyor mu?
-- Repo içeriği ile README'deki paylaşım kapsamı tutarlı mı?
-- Public-facing açıklama metni ve repo açıklaması aynı mesaj ailesinde mi?
+RiskTwin bir mühendislik kararının yerine geçmez. Ürün, eksik envanteri zenginleştiren, önceliklendirme yapan, belirsizliği görünür kılan ve uzman kararını hızlandıran bir karar destek katmanı olarak konumlanır.
 
 ## Lisans
 
