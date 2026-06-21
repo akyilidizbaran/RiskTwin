@@ -1,9 +1,15 @@
 """
 RiskTwin - Ana Sayfa / Proje Tanıtımı
-Yarışma showcase sayfası: Hero, Problem, Çözüm, Nasıl Çalışır, Veri Kaynakları, Yol Haritası.
+Final Report ile uyumlu: Hero, Problem, Çözüm, Nasıl Çalışır, Veri Kaynakları, Yol Haritası.
 """
 import streamlit as st
-from components.metric_cards import render_feature_card, render_step_card, render_disclaimer
+from components.metric_cards import (
+    render_feature_card,
+    render_step_card,
+    render_disclaimer,
+    render_summary_grid,
+    render_phase_card,
+)
 
 
 def render_home():
@@ -12,54 +18,103 @@ def render_home():
     # ═══════════════════════════════════════════
     st.markdown("""
     <div class="hero-section">
-        <div class="hero-kicker">Risk Intelligence Command</div>
-        <div class="hero-title">RiskTwin</div>
-        <div class="hero-subtitle">
-            Bina ve parsel verisini deprem tehlikesi ve temel yapı parametreleriyle birleştirerek
-            ön değerlendirme, senaryo kıyası ve inceleme önceliği üreten açıklanabilir bir karar destek platformu.
+        <div class="hero-main">
+            <div class="hero-kicker">Explainable Risk Decision Support</div>
+            <div class="hero-title">RiskTwin</div>
+            <div class="hero-subtitle">
+                Belediye envanteri, hazard bağlamı, olay-bazlı hasar kanıtı ve açıklanabilir karar desteğini
+                Digital Twin veri modelinde birleştiren deprem risk karar destek sistemi.
+            </div>
+            <div class="hero-meta-grid">
+                <div class="hero-meta-card">
+                    <div class="hero-meta-value">05</div>
+                    <div class="hero-meta-label">Aktif lokasyon seti</div>
+                </div>
+                <div class="hero-meta-card">
+                    <div class="hero-meta-value">36</div>
+                    <div class="hero-meta-label">Demo bina girdisi</div>
+                </div>
+                <div class="hero-meta-card">
+                    <div class="hero-meta-value">04</div>
+                    <div class="hero-meta-label">Senaryo aksiyonu</div>
+                </div>
+                <div class="hero-meta-card">
+                    <div class="hero-meta-value">TR</div>
+                    <div class="hero-meta-label">Açıklanabilir çıktı dili</div>
+                </div>
+            </div>
         </div>
-        <div class="hero-meta-grid">
-            <div class="hero-meta-card">
-                <div class="hero-meta-value">05</div>
-                <div class="hero-meta-label">Aktif lokasyon seti</div>
+        <div class="hero-side">
+            <div class="hero-side-card hero-side-card--signal">
+                <div class="hero-side-label">Karar Destek Omurgası</div>
+                <div class="hero-side-value">Event-aware, explainable, Digital Twin tabanlı</div>
+                <div class="hero-side-desc">
+                    Amaç güzel görünen bir demo değil; belediye, geliştirici ve teknik ekip için
+                    aynı veriyi aynı karar zincirine bağlamak.
+                </div>
+                <div class="hero-signal-list">
+                    <div class="hero-signal-item">
+                        <div class="hero-signal-item__label">Karar Ailesi</div>
+                        <div class="hero-signal-item__value">Risk + Uygunluk + Öncelik</div>
+                    </div>
+                    <div class="hero-signal-item">
+                        <div class="hero-signal-item__label">Çekirdek Katman</div>
+                        <div class="hero-signal-item__value">Hazard Bağlamı + Kırılganlık + Kanıt</div>
+                    </div>
+                    <div class="hero-signal-item">
+                        <div class="hero-signal-item__label">Mimari</div>
+                        <div class="hero-signal-item__value">Heuristic-first, ML-ready, Digital Twin</div>
+                    </div>
+                </div>
             </div>
-            <div class="hero-meta-card">
-                <div class="hero-meta-value">36</div>
-                <div class="hero-meta-label">Demo bina girdisi</div>
-            </div>
-            <div class="hero-meta-card">
-                <div class="hero-meta-value">04</div>
-                <div class="hero-meta-label">Senaryo aksiyonu</div>
-            </div>
-            <div class="hero-meta-card">
-                <div class="hero-meta-value">TR</div>
-                <div class="hero-meta-label">Açıklanabilir çıktı dili</div>
+            <div class="hero-side-card hero-side-card--command">
+                <div class="hero-side-label">Akademik Kimlik</div>
+                <div class="hero-side-desc">
+                    Explainable, event-aware, Digital Twin tabanlı deprem risk karar destek sistemi.
+                </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown('<div class="rt-spacer-md"></div>', unsafe_allow_html=True)
+
     st.markdown(
         """
-        <div class="rt-card" style="padding:1rem 1.15rem; margin-bottom:1.15rem;">
-            <div style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:0.9rem;">
-                <div>
-                    <div class="summary-eyebrow">Stratejik Etiket</div>
-                    <div class="status-chip" style="background:rgba(56,189,248,0.12); border-color:rgba(56,189,248,0.24); color:#8AD4FF;">KURUMSAL_TARAMA</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Karar Türü</div>
-                    <div class="status-chip" style="background:rgba(34,197,94,0.12); border-color:rgba(34,197,94,0.24); color:#86EFAC;">AÇIKLANABİLİR_SKOR</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Ürün Çekirdeği</div>
-                    <div class="summary-value" style="font-size:1.15rem;">3 Skor</div>
-                    <div class="summary-caption">Risk, uygunluk, inceleme önceliği</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Olgunluk</div>
-                    <div class="summary-value" style="font-size:1.15rem;">TRL-8</div>
-                    <div class="summary-caption">Heuristic-first ürün ailesi</div>
+        <div class="editorial-grid">
+            <div class="editorial-card editorial-card--accent">
+                <div class="summary-eyebrow">Ürün Vaadi</div>
+                <h3 class="editorial-title">Deprem olmadan önce hangi yapıların daha kırılgan, daha öncelikli olduğunu açıklanabilir biçimde ayırt etmek.</h3>
+                <p class="editorial-text">
+                    RiskTwin bir dashboard koleksiyonu değil. Belediyenin risk taraması, geliştiricinin proje ön analizi
+                    ve teknik ekibin inceleme önceliği aynı yüzeyde, aynı hazard bağlamı ve kırılganlık verileriyle okunur.
+                    Her binaya aynı refleksle yaklaşmak yerine, önceden önceliklendirme yapabilmek temel hedeftir.
+                </p>
+            </div>
+            <div class="editorial-card">
+                <div class="summary-eyebrow">Neden RiskTwin?</div>
+                <div class="editorial-list">
+                    <div class="editorial-item">
+                        <div class="editorial-item__code">RP</div>
+                        <div>
+                            <div class="editorial-item__title">Reaktiften proaktife geçiş</div>
+                            <div class="editorial-item__desc">Deprem sonrası reaksiyon mantığı can kaybı ve kaynak israfı riskini artırır. Önceden önceliklendirme şarttır.</div>
+                        </div>
+                    </div>
+                    <div class="editorial-item">
+                        <div class="editorial-item__code">HB</div>
+                        <div>
+                            <div class="editorial-item__title">Hazard bağlamı olmadan karar verilemez</div>
+                            <div class="editorial-item__desc">İki benzer yapı tamamen farklı tehlike bağlamlarında bulunabilir. Mekânsal zeka zorunludur.</div>
+                        </div>
+                    </div>
+                    <div class="editorial-item">
+                        <div class="editorial-item__code">EH</div>
+                        <div>
+                            <div class="editorial-item__title">Parçalı değerlendirme ekonomik hata üretir</div>
+                            <div class="editorial-item__desc">Yanlış risk önceliklendirmesi yalnız teknik hata değil, güçlendirme bütçesinde ciddi maliyet zaafiyetine yol açar.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,61 +122,7 @@ def render_home():
         unsafe_allow_html=True,
     )
 
-    # Quick stats
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        st.markdown("""
-        <div class="rt-card stat-card">
-            <div class="stat-card-value" style="color:#38BDF8;">5</div>
-            <div class="stat-card-label">Veri katmanı</div>
-        </div>""", unsafe_allow_html=True)
-    with c2:
-        st.markdown("""
-        <div class="rt-card stat-card">
-            <div class="stat-card-value" style="color:#22C55E;">3</div>
-            <div class="stat-card-label">Karar skoru</div>
-        </div>""", unsafe_allow_html=True)
-    with c3:
-        st.markdown("""
-        <div class="rt-card stat-card">
-            <div class="stat-card-value" style="color:#F59E0B;">4+</div>
-            <div class="stat-card-label">Aksiyon tipi</div>
-        </div>""", unsafe_allow_html=True)
-    with c4:
-        st.markdown("""
-        <div class="rt-card stat-card">
-            <div class="stat-card-value" style="color:#F97316;">%100</div>
-            <div class="stat-card-label">İzlenebilir mantık</div>
-        </div>""", unsafe_allow_html=True)
-
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
-
-    st.markdown(
-        """
-        <div class="rt-card" style="padding:1rem 1.15rem;">
-            <div style="display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:0.9rem;">
-                <div>
-                    <div class="summary-eyebrow">Ürün Vaadi</div>
-                    <div style="color:#F8FAFC; font-weight:600; margin-bottom:0.3rem;">Parçalı saha verisini tek karar yüzeyinde toplamak.</div>
-                    <div class="summary-caption">Belediye, geliştirici ve denetim ekipleri aynı sinyalleri aynı dilde okur.</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Zamanlama</div>
-                    <div style="color:#F8FAFC; font-weight:600; margin-bottom:0.3rem;">Risk taraması artık toplu ve erken yapılmak zorunda.</div>
-                    <div class="summary-caption">Kentsel dönüşüm ve saha inceleme bütçeleri daha veri odaklı yönetilmeli.</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Uygulama Hedefi</div>
-                    <div style="color:#F8FAFC; font-weight:600; margin-bottom:0.3rem;">Streamlit içinde uygulanabilir premium arayüz.</div>
-                    <div class="summary-caption">Gösterişli mockup değil, ürünleşebilir karar ekranı.</div>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # PROBLEM BÖLÜMÜ
@@ -132,29 +133,33 @@ def render_home():
     with pc1:
         st.markdown("""
         <div class="rt-card">
-            <h3 style="color:#F8FAFC; margin-top:0;">Parçalı Değerlendirme, Geç Kalan Kararlar</h3>
-            <p style="color:#CBD5E1; line-height:1.7; font-size:0.95rem;">
-            Türkiye'de bina ve proje kararları çoğu zaman deprem tehlikesi, yapı özellikleri ve mekânsal veriler
-            arasında <strong style="color:#F59E0B;">parçalı biçimde</strong> değerlendiriliyor.
-            Bu durum riskin geç fark edilmesine, yanlış önceliklendirmeye ve yavaş karar süreçlerine yol açıyor.
+            <h3 style="color:var(--rt-text); margin-top:0;">Deprem Öncesi Önceliklendirme Eksikliği</h3>
+            <p style="color:var(--rt-text); line-height:1.7; font-size:0.95rem;">
+            Depremle ilgili asıl problem çoğu zaman yalnızca deprem anı değildir. Asıl problem,
+            <strong style="color:var(--rt-amber);">deprem öncesinde hangi yapının daha dikkat gerektirdiğini yeterince ayırt edememek</strong>
+            ve deprem sonrasında çok büyük bir bina stoğu üzerinde zaman baskısı altında karar vermek zorunda kalmaktır.
             </p>
-            <p style="color:#CBD5E1; line-height:1.7; font-size:0.95rem;">
-            Mevcut süreçler <strong style="color:#EF4444;">uzman bağımlı, zaman alıcı ve yüksek maliyetli</strong>.
-            Milyonlarca yapının ön değerlendirmesi ölçeklenebilir bir yaklaşım gerektiriyor.
+            <p style="color:var(--rt-text); line-height:1.7; font-size:0.95rem;">
+            Eğer süreçler yalnız deprem sonrası reaksiyon mantığıyla yürütülürse üç büyük sorun ortaya çıkar:
             </p>
+            <ol style="color:var(--rt-text); line-height:1.8; font-size:0.95rem;">
+                <li><strong style="color:var(--rt-red);">Sınırlı insan kaynağı ve saha kapasitesi</strong> yanlış yere harcanabilir</li>
+                <li><strong style="color:var(--rt-red);">Gerçekten yüksek öncelikli yapılar</strong> zamanında ele alınamayabilir</li>
+                <li>Düşük öncelikli yapılara aşırı müdahale edilirken <strong style="color:var(--rt-red);">yüksek riskli alanlar gölgede kalabilir</strong></li>
+            </ol>
         </div>
         """, unsafe_allow_html=True)
     with pc2:
         st.markdown("""
-        <div class="rt-card" style="text-align:center; padding:2rem 1rem;">
-            <div style="font-size:2.5rem; font-weight:800; color:#EF4444;">6.7M+</div>
-            <div style="font-size:0.85rem; color:#94A3B8; margin-top:0.25rem;">
+        <div class="rt-card" style="text-align:center; padding:var(--rt-space-xl) var(--rt-space-md);">
+            <div style="font-size:2.5rem; font-weight:800; color:var(--rt-red);">6.7M+</div>
+            <div class="summary-caption" style="margin-top:var(--rt-space-xs);">
                 Türkiye'de deprem riski altında<br/>tahmini yapı sayısı
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # ÇÖZÜM BÖLÜMÜ
@@ -165,87 +170,33 @@ def render_home():
     with sol1:
         render_feature_card(
             "RT", "Deprem Risk Taraması",
-            "Bina ve lokasyon parametrelerini deprem tehlikesi verileriyle birleştirerek hızlı ve açıklanabilir risk skoru üretir."
+            "Bina parametrelerini hazard bağlamı (fay yakınlığı, zemin tehlikesi, sarsıntı profili) ile birleştirerek açıklanabilir risk skoru üretir."
         )
     with sol2:
         render_feature_card(
             "PQ", "Proje Uygunluk Kıyası",
-            "Mevcut veya planlanan yapıların deprem bölgesine uygunluğunu değerlendirir ve proje uygunluk skoru hesaplar."
+            "Yapıların deprem bölgesine uygunluğunu kırılganlık (vulnerability) perspektifinden değerlendirir ve proje uygunluk skoru hesaplar."
         )
     with sol3:
         render_feature_card(
             "IO", "İnceleme Önceliği",
-            "Risk seviyesine göre detaylı inceleme ve güçlendirme önceliği belirler, karar vericilere yol haritası sunar."
+            "Risk seviyesine göre inceleme önceliği ve uyarı semantiği belirler. Hangi bina önce incelenmeli ve bu karar neden verildi?"
         )
 
     st.markdown(
         """
-        <div class="rt-card" style="padding:1rem 1.15rem; margin-top:1rem;">
+        <div class="rt-card rt-card--compact" style="margin-top:var(--rt-space-md);">
             <div class="summary-eyebrow">Çözüm Çerçevesi</div>
             <div class="summary-caption">
-                RiskTwin tek bir skor üreten araç değil; lokasyon, yapı durumu ve müdahale alternatiflerini
-                aynı karar ailesine bağlayan kurumsal bir ön değerlendirme katmanıdır.
+                RiskTwin yeni bir hasar sınıflandırıcı yarışına girmemektedir.
+                Explainable, event-aware, bina düzeyi karar destek sistemi kurmaktadır.
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
-
-    # ═══════════════════════════════════════════
-    # NEDEN ŞİMDİ?
-    # ═══════════════════════════════════════════
-    st.markdown('<div class="section-header">NEDEN ŞİMDİ?</div>', unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="rt-card">
-        <div class="insight-grid">
-            <div class="insight-item">
-                <div class="insight-item-head">
-                    <div class="insight-item-code">RS</div>
-                    <div class="insight-item-title">Deprem Gerçeği</div>
-                </div>
-                <div class="insight-item-text">
-                    Türkiye dünyanın en aktif sismik bölgelerinden birinde. 2023 Kahramanmaraş depremleri bu gerçeği
-                    bir kez daha hatırlattı. Proaktif risk taraması artık bir tercih değil, zorunluluk.
-                </div>
-            </div>
-            <div class="insight-item">
-                <div class="insight-item-head">
-                    <div class="insight-item-code">KD</div>
-                    <div class="insight-item-title">Kentsel Dönüşüm İhtiyacı</div>
-                </div>
-                <div class="insight-item-text">
-                    Büyük geliştiriciler ve belediyeler için proje öncesi ön değerlendirme,
-                    karar hızını artırır ve doğru yapılara öncelik verilmesini sağlar.
-                </div>
-            </div>
-            <div class="insight-item">
-                <div class="insight-item-head">
-                    <div class="insight-item-code">VO</div>
-                    <div class="insight-item-title">Veri Odaklı Karar Eksikliği</div>
-                </div>
-                <div class="insight-item-text">
-                    Deprem riski, yapı durumu ve mekânsal veriler genellikle ayrı ayrı değerlendiriliyor.
-                    Bütünleşik ve açıklanabilir bir karar destek aracı eksikliği giderilmelidir.
-                </div>
-            </div>
-            <div class="insight-item">
-                <div class="insight-item-head">
-                    <div class="insight-item-code">ML</div>
-                    <div class="insight-item-title">AI ile Ölçeklenebilirlik</div>
-                </div>
-                <div class="insight-item-text">
-                    ML modelleriyle binlerce yapının eş zamanlı ön değerlendirilmesi mümkün hale geliyor.
-                    Heuristic ile başla, veri toplandıkça öğrenen sisteme geç.
-                </div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # NASIL ÇALIŞIR?
@@ -262,29 +213,18 @@ def render_home():
     with s4:
         render_step_card(4, "Senaryoları Kıyasla", "Güçlendirme, kat azaltma gibi alternatiflerin etkisini karşılaştır.")
 
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # VERİ KAYNAKLARI
     # ═══════════════════════════════════════════
     st.markdown('<div class="section-header">VERİ KAYNAKLARI</div>', unsafe_allow_html=True)
 
-    st.markdown(
-        """
-        <div class="rt-card" style="padding:1rem 1.15rem; margin-bottom:1rem;">
-            <div class="summary-eyebrow">Kanıt Mantığı</div>
-            <div style="color:#F8FAFC; font-weight:600; margin-bottom:0.35rem;">Her veri kaynağı ürün içindeki rolüyle gösterilir.</div>
-            <div class="summary-caption">Amaç veri adı saymak değil, karar mekanizmasına hangi girdinin nasıl girdiğini görünür yapmak.</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
     d1, d2, d3, d4 = st.columns(4)
     with d1:
         render_feature_card(
             "AF", "AFAD",
-            "Deprem tehlike verisi. Lokasyon bazlı hazard input olarak kullanılır."
+            "Deprem tehlike verisi ve hazard bağlamı. Lokasyon bazlı tehlike profili üretilir."
         )
     with d2:
         render_feature_card(
@@ -302,7 +242,7 @@ def render_home():
             "Nüfus yoğunluğu bağlam verisi ve coğrafi referans katmanları (opsiyonel)."
         )
 
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # ÜRÜN ÖZELLİKLERİ
@@ -313,81 +253,57 @@ def render_home():
     with f1:
         st.markdown("""
         <div class="rt-card">
-            <div style="color:#10B981; font-weight:700; margin-bottom:0.5rem;">Açıklanabilir Skor</div>
-            <div style="color:#94A3B8; font-size:0.85rem;">Her skor kararı Türkçe doğal dil ile açıklanır. Hangi faktörler riski artırıyor, neden bu öncelik verildi?</div>
+            <div class="rt-feature-highlight">Açıklanabilir Skor</div>
+            <div class="rt-feature-highlight__desc">Explainability isteğe bağlı bir süs değil, akademik ve kurumsal meşruiyet sağlayan ana bileşendir. Her skor kararı Türkçe doğal dil ile açıklanır.</div>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("""
         <div class="rt-card">
-            <div style="color:#10B981; font-weight:700; margin-bottom:0.5rem;">Harita Destekli Analiz</div>
-            <div style="color:#94A3B8; font-size:0.85rem;">Folium tabanlı interaktif harita ile lokasyon bazlı risk görselleştirmesi ve mahalle sınırları.</div>
+            <div class="rt-feature-highlight">Harita Destekli Analiz</div>
+            <div class="rt-feature-highlight__desc">Folium tabanlı interaktif harita ile hazard bağlamı ve lokasyon bazlı risk görselleştirmesi.</div>
         </div>
         """, unsafe_allow_html=True)
     with f2:
         st.markdown("""
         <div class="rt-card">
-            <div style="color:#10B981; font-weight:700; margin-bottom:0.5rem;">Senaryo Karşılaştırma</div>
-            <div style="color:#94A3B8; font-size:0.85rem;">Güçlendirme, kat azaltma, zemin iyileştirme senaryolarının risk üzerindeki etkisini yan yana görün.</div>
+            <div class="rt-feature-highlight">Senaryo Karşılaştırma</div>
+            <div class="rt-feature-highlight__desc">Güçlendirme, kat azaltma, zemin iyileştirme senaryolarının risk üzerindeki etkisini yan yana görün.</div>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("""
         <div class="rt-card">
-            <div style="color:#10B981; font-weight:700; margin-bottom:0.5rem;">ML-Ready Mimari</div>
-            <div style="color:#94A3B8; font-size:0.85rem;">Heuristic baseline + eğitilebilir ML pipeline. Veri toplandıkça supervised modele geçiş hazır.</div>
+            <div class="rt-feature-highlight">Hibrit Mimari: Heuristic + ML</div>
+            <div class="rt-feature-highlight__desc">Heuristic ile başla, veri toplandıkça ML'e geç. Etiketli veri gerektirmez, hemen çalışır, uzmanlar doğrulayabilir. Veri büyüdükçe supervised modele geçiş hazır.</div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown(
-        """
-        <div class="rt-card" style="padding:1rem 1.15rem;">
-            <div style="display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:0.9rem;">
-                <div>
-                    <div class="summary-eyebrow">Aksiyon Modeli</div>
-                    <div class="summary-value" style="font-size:1.1rem;">4+</div>
-                    <div class="summary-caption">Tara, kıyasla, önceliklendir, güçlendir</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Teknik İz</div>
-                    <div class="summary-value" style="font-size:1.1rem;">%100</div>
-                    <div class="summary-caption">Geri izlenebilir açıklama üretimi</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Ürün Dili</div>
-                    <div class="summary-value" style="font-size:1.1rem;">TR</div>
-                    <div class="summary-caption">Operasyon odaklı yerel karar metni</div>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # YOL HARİTASI
     # ═══════════════════════════════════════════
     st.markdown('<div class="section-header">YOL HARİTASI</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="phase-card active">
-        <div style="color:#10B981; font-weight:700; font-size:0.8rem; letter-spacing:0.05em;">FAZ 1 — ŞU AN</div>
-        <div style="color:#F8FAFC; font-weight:600; margin:0.3rem 0;">Heuristic MVP + Baseline ML</div>
-        <div style="color:#94A3B8; font-size:0.85rem;">Kural tabanlı skorlama, senaryo karşılaştırma, açıklanabilir çıktı, demo veri seti, Streamlit dashboard</div>
-    </div>
-    <div class="phase-card">
-        <div style="color:#0EA5E9; font-weight:700; font-size:0.8rem; letter-spacing:0.05em;">FAZ 2 — YAKIN GELECEK</div>
-        <div style="color:#F8FAFC; font-weight:600; margin:0.3rem 0;">Gerçek Veri + Supervised Model</div>
-        <div style="color:#94A3B8; font-size:0.85rem;">AFAD/OSM otomatik entegrasyon, çoklu şehir, hasar etiketli veri ile model eğitimi, SHAP açıklanabilirlik</div>
-    </div>
-    <div class="phase-card future">
-        <div style="color:#64748B; font-weight:700; font-size:0.8rem; letter-spacing:0.05em;">FAZ 3 — VİZYON</div>
-        <div style="color:#F8FAFC; font-weight:600; margin:0.3rem 0;">Derin Entegrasyon + BIM</div>
-        <div style="color:#94A3B8; font-size:0.85rem;">TUCBS/belediye açık veri, BIM dosya okuma, zemin etüdü katmanı, API layer, çok kullanıcılı erişim</div>
-    </div>
-    """, unsafe_allow_html=True)
+    render_phase_card(
+        "FAZ 1 — ŞU AN",
+        "Heuristic MVP + Baseline ML",
+        "Kural tabanlı skorlama, hazard bağlamı entegrasyonu, event-aware bina kaydı, senaryo karşılaştırma, açıklanabilir çıktı, demo veri seti, Streamlit dashboard",
+        variant="active",
+    )
+    render_phase_card(
+        "FAZ 2 — YAKIN GELECEK",
+        "Gerçek Veri + Supervised Model",
+        "AFAD/OSM otomatik entegrasyon, çoklu şehir, hasar etiketli veri ile supervised model eğitimi, SHAP açıklanabilirlik, PostGIS, provenance-rich kayıt",
+        variant="default",
+    )
+    render_phase_card(
+        "FAZ 3 — VİZYON",
+        "Derin Entegrasyon + BIM",
+        "BIM (IFC) dosya okuma, TUCBS/belediye açık veri entegrasyonu, zemin etüdü katmanı, FastAPI backend, çok kullanıcılı erişim, CI/CD",
+        variant="future",
+    )
 
-    st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-lg"></div>', unsafe_allow_html=True)
 
     # ═══════════════════════════════════════════
     # DISCLAIMER

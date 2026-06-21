@@ -4,6 +4,7 @@ Ana Streamlit Uygulaması (Çok Sayfalı)
 """
 import sys
 import os
+import base64
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -21,7 +22,7 @@ st.set_page_config(
     page_title="RiskTwin",
     page_icon=None,
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # ── Global CSS ──
@@ -42,73 +43,108 @@ except Exception as e:
     st.error(f"Veri yükleme hatası: {e}")
     st.stop()
 
-# ── Sidebar Navigasyon ──
-with st.sidebar:
-    st.markdown("""
-    <div style="padding: 0.6rem 0 0.9rem;">
-        <div style="display:inline-flex; align-items:center; gap:0.55rem; padding:0.4rem 0.7rem; border-radius:999px;
-            border:1px solid rgba(56,189,248,0.18); background:rgba(56,189,248,0.08); color:#8AD4FF; font-size:0.72rem;
-            text-transform:uppercase; letter-spacing:0.16em; margin-bottom:1rem;">
-            Risk Intelligence
-        </div>
-        <div style="font-size:2.2rem; font-weight:800; color:#F8FAFC; font-family:'JetBrains Mono', monospace;">
-            RiskTwin
-        </div>
-        <div style="font-size:0.82rem; color:#94A3B8; letter-spacing:0.06em; margin-top:0.45rem; line-height:1.7;">
-            Deprem risk ve proje uygunluk kararlarını daha hızlı,
-            daha okunabilir ve daha güvenilir hale getiren analiz katmanı.
-        </div>
+# ── Session State ──
+if "page" not in st.session_state:
+    st.session_state.page = "Proje Tanıtımı"
+
+PAGES = ["Proje Tanıtımı", "Risk Analizi", "Senaryo Karşılaştırma", "Metodoloji", "Hakkında"]
+
+# ── Query param ile sayfa geçişi (mobil hamburger menüden) ──
+_qp = st.query_params.get("page", None)
+if _qp and _qp in PAGES and st.session_state.page != _qp:
+    st.session_state.page = _qp
+
+# ── Logo yükle ──
+_logo_path = os.path.join(APP_DIR, "static", "logo.svg")
+with open(_logo_path, "r") as _f:
+    _logo_svg = _f.read()
+_logo_b64 = base64.b64encode(_logo_svg.encode()).decode()
+
+# ── Hamburger menü linkleri ──
+_active = st.session_state.page
+_menu_items = ""
+for _idx, _p in enumerate(PAGES):
+    _cls = "rt-mobile-menu__item--active" if _p == _active else ""
+    _href = f"?page={_p.replace(' ', '+')}"
+    _delay = f'style="transition-delay: {0.06 * (_idx + 1):.2f}s"'
+    _menu_items += f'<a href="{_href}" class="rt-mobile-menu__item {_cls}" {_delay}>{_p}</a>\n'
+
+# ── Üst Navigasyon Barı ──
+st.markdown(f"""
+<div class="rt-topnav">
+    <div class="rt-topnav-brand">
+        <img src="data:image/svg+xml;base64,{_logo_b64}" class="rt-topnav-brand__icon" alt="RiskTwin" />
+        <span class="rt-topnav-brand__logo">RiskTwin</span>
+        <span class="rt-topnav-brand__badge">Risk Intelligence</span>
     </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
-
-    PAGES = {
-        "Proje Tanıtımı": "Overview",
-        "Risk Analizi": "Analysis",
-        "Senaryo Karşılaştırma": "Scenarios",
-        "Veri ve Metodoloji": "Method",
-        "Hakkında": "Context",
-    }
-
-    page = st.radio(
-        "Navigasyon",
-        list(PAGES.keys()),
-        format_func=lambda x: f"{x}",
-        label_visibility="collapsed",
-    )
-
-    st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
-    st.markdown("---")
-
-    st.markdown("""
-    <div class="rt-card" style="padding:1rem 1rem 0.9rem; margin-bottom:0.9rem;">
-        <div class="section-header" style="margin-bottom:0.7rem;">CANLI DEMO</div>
-        <div class="metric-inline"><span class="metric-inline-label">Lokasyon</span><span class="metric-inline-value">5 İstanbul noktası</span></div>
-        <div class="metric-inline"><span class="metric-inline-label">Bina girdisi</span><span class="metric-inline-value">36 demo kayıt</span></div>
-        <div class="metric-inline"><span class="metric-inline-label">Çalışma modu</span><span class="metric-inline-value">Heuristic + ML-ready</span></div>
+    <input type="checkbox" id="rt-hamburger-toggle" class="rt-hamburger-input" />
+    <label for="rt-hamburger-toggle" class="rt-hamburger-btn" aria-label="Menüyü aç/kapat">
+        <span class="rt-hamburger-line"></span>
+        <span class="rt-hamburger-line"></span>
+        <span class="rt-hamburger-line"></span>
+    </label>
+    <div class="rt-mobile-menu">
+        <label for="rt-hamburger-toggle" class="rt-mobile-menu__overlay" aria-label="Menüyü kapat"></label>
+        <nav class="rt-mobile-menu__nav">
+            <div class="rt-mobile-menu__header">
+                <img src="data:image/svg+xml;base64,{_logo_b64}" class="rt-mobile-menu__logo-icon" alt="" />
+                <span class="rt-mobile-menu__logo-text">RiskTwin</span>
+            </div>
+            {_menu_items}
+            <div class="rt-mobile-menu__footer">
+                <span>Deprem Risk Karar Destek Sistemi</span>
+            </div>
+        </nav>
     </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="disclaimer-box" style="margin:0;">
-        <p style="font-size:0.75rem;">&#9888; Ön değerlendirme aracıdır. Mühendislik kararı yerine geçmez.</p>
-    </div>
-    """, unsafe_allow_html=True)
+# ── Desktop nav butonları ──
+with st.container():
+    st.markdown('<div class="rt-nav-desktop"><div class="rt-nav-buttons">', unsafe_allow_html=True)
+    nav_cols = st.columns(len(PAGES))
+    for col, page_name in zip(nav_cols, PAGES):
+        with col:
+            is_active = st.session_state.page == page_name
+            if st.button(
+                page_name,
+                key=f"nav_{page_name}",
+                type="primary" if is_active else "secondary",
+                use_container_width=True,
+            ):
+                st.session_state.page = page_name
+                st.rerun()
+    st.markdown('</div></div>', unsafe_allow_html=True)
+
+st.markdown("---")
 
 # ── Sayfa Yönlendirme ──
-if page == "Proje Tanıtımı":
+active = st.session_state.page
+
+if active == "Proje Tanıtımı":
     from pages.home import render_home
     render_home()
-elif page == "Risk Analizi":
+elif active == "Risk Analizi":
     from pages.risk_analysis import render_risk_analysis
     render_risk_analysis(locations, hazard_df, building_df)
-elif page == "Senaryo Karşılaştırma":
+elif active == "Senaryo Karşılaştırma":
     from pages.scenario import render_scenario
     render_scenario(locations)
-elif page == "Veri ve Metodoloji":
+elif active == "Metodoloji":
     from pages.methodology import render_methodology
     render_methodology()
-elif page == "Hakkında":
+elif active == "Hakkında":
     from pages.about import render_about
     render_about()
+
+# ── Footer ──
+st.markdown("""
+<div class="rt-footer">
+    <div class="rt-footer__info">
+        <span class="rt-footer__item"><strong>Lokasyon:</strong> 5 İstanbul noktası</span>
+        <span class="rt-footer__item"><strong>Veri:</strong> 36 demo kayıt</span>
+        <span class="rt-footer__item"><strong>Motor:</strong> Heuristic + ML-ready</span>
+    </div>
+    <span class="rt-footer__disclaimer">⚠ Ön değerlendirme aracıdır. Mühendislik kararı yerine geçmez.</span>
+</div>
+""", unsafe_allow_html=True)

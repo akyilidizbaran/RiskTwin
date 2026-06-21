@@ -8,13 +8,22 @@ from typing import Dict, List
 from components.styles import COLORS, RISK_COLORS
 
 
+_FONT_FAMILY = "Inter, sans-serif"
+
+_AXIS_DEFAULTS = dict(
+    gridcolor="rgba(0, 0, 0, 0.06)",
+    zerolinecolor="rgba(0, 0, 0, 0.06)",
+)
+
 CHART_LAYOUT_DEFAULTS = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#CBD5E1", family="IBM Plex Sans, sans-serif"),
+    font=dict(color="#1A1A2E", family=_FONT_FAMILY),
     margin=dict(t=24, b=46, l=52, r=24),
     showlegend=False,
 )
+
+_TEXT_FONT = dict(color="#FFFFFF", family=_FONT_FAMILY)
 
 
 def create_factor_bar_chart(sub_scores: Dict[str, float], height: int = 320) -> go.Figure:
@@ -26,7 +35,6 @@ def create_factor_bar_chart(sub_scores: Dict[str, float], height: int = 320) -> 
         "floors": "Kat Sayısı",
         "system": "Taşıyıcı Sistem",
     }
-    # En yüksekten düşüğe sırala
     sorted_items = sorted(sub_scores.items(), key=lambda x: x[1])
     labels = [factor_labels.get(k, k) for k, _ in sorted_items]
     values = [v for _, v in sorted_items]
@@ -42,13 +50,13 @@ def create_factor_bar_chart(sub_scores: Dict[str, float], height: int = 320) -> 
         marker_color=colors,
         text=[f"{v:.0f}" for v in values],
         textposition="auto",
-        textfont=dict(color="white", size=13, family="IBM Plex Sans, sans-serif"),
+        textfont=dict(**_TEXT_FONT, size=13),
     ))
     fig.update_layout(
         **CHART_LAYOUT_DEFAULTS,
         height=height,
-        xaxis=dict(range=[0, 100], title="Alt Skor (0-100)", gridcolor="#334155", zerolinecolor="#334155"),
-        yaxis=dict(gridcolor="#334155"),
+        xaxis=dict(range=[0, 100], title="Alt Skor (0-100)", **_AXIS_DEFAULTS),
+        yaxis=dict(**_AXIS_DEFAULTS),
     )
     return fig
 
@@ -56,14 +64,7 @@ def create_factor_bar_chart(sub_scores: Dict[str, float], height: int = 320) -> 
 def create_scenario_comparison_chart(scenarios: List[Dict], height: int = 380) -> go.Figure:
     """Senaryo karşılaştırma grouped bar chart."""
     names = [sc["scenario_name"] for sc in scenarios]
-
-    # Kısa isimler
-    short_names = []
-    for n in names:
-        if len(n) > 25:
-            short_names.append(n[:22] + "...")
-        else:
-            short_names.append(n)
+    short_names = [n[:22] + "..." if len(n) > 25 else n for n in names]
 
     fig = go.Figure()
     fig.add_trace(go.Bar(
@@ -74,7 +75,7 @@ def create_scenario_comparison_chart(scenarios: List[Dict], height: int = 380) -
         opacity=0.8,
         text=[f'{sc["base_risk_score"]:.0f}' for sc in scenarios],
         textposition="auto",
-        textfont=dict(color="white", family="IBM Plex Sans, sans-serif"),
+        textfont=_TEXT_FONT,
     ))
     fig.add_trace(go.Bar(
         name="Yeni Risk",
@@ -84,7 +85,7 @@ def create_scenario_comparison_chart(scenarios: List[Dict], height: int = 380) -
         opacity=0.8,
         text=[f'{sc["new_risk_score"]:.0f}' for sc in scenarios],
         textposition="auto",
-        textfont=dict(color="white", family="IBM Plex Sans, sans-serif"),
+        textfont=_TEXT_FONT,
     ))
     fig.update_layout(
         **{k: v for k, v in CHART_LAYOUT_DEFAULTS.items() if k != "showlegend"},
@@ -95,13 +96,13 @@ def create_scenario_comparison_chart(scenarios: List[Dict], height: int = 380) -
             y=1.05,
             x=0.5,
             xanchor="center",
-            bgcolor="rgba(10,15,27,0.0)",
-            font=dict(color="#CBD5E1", family="IBM Plex Sans, sans-serif"),
+            bgcolor="rgba(255,255,255,0)",
+            font=dict(color="#1A1A2E", family=_FONT_FAMILY),
         ),
         barmode="group",
         height=height,
-        yaxis=dict(range=[0, 100], title="Risk Skoru", gridcolor="#334155", zerolinecolor="#334155"),
-        xaxis=dict(gridcolor="#334155"),
+        yaxis=dict(range=[0, 100], title="Risk Skoru", **_AXIS_DEFAULTS),
+        xaxis=dict(**_AXIS_DEFAULTS),
     )
     return fig
 
@@ -118,16 +119,16 @@ def create_risk_gauge(score: float, height: int = 200) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
-        number=dict(font=dict(size=36, color="#F8FAFC")),
+        number=dict(font=dict(size=36, color="#1A1A2E")),
         gauge=dict(
-            axis=dict(range=[0, 100], tickcolor="#64748B", tickwidth=1),
+            axis=dict(range=[0, 100], tickcolor="#9CA3AF", tickwidth=1),
             bar=dict(color=bar_color, thickness=0.8),
-            bgcolor="#1E293B",
+            bgcolor="#F8F9FA",
             borderwidth=0,
             steps=[
-                dict(range=[0, 39], color="rgba(16,185,129,0.15)"),
-                dict(range=[40, 64], color="rgba(245,158,11,0.15)"),
-                dict(range=[65, 100], color="rgba(239,68,68,0.15)"),
+                dict(range=[0, 39], color="rgba(64,145,108,0.12)"),
+                dict(range=[40, 64], color="rgba(242,140,40,0.12)"),
+                dict(range=[65, 100], color="rgba(230,57,70,0.10)"),
             ],
         ),
     ))
@@ -141,7 +142,6 @@ def create_risk_gauge(score: float, height: int = 200) -> go.Figure:
 
 def create_feature_importance_chart(feature_names: list, importances: list, height: int = 300) -> go.Figure:
     """Feature importance bar chart (ML baseline)."""
-    # Sırala
     sorted_pairs = sorted(zip(feature_names, importances), key=lambda x: x[1])
     labels = [p[0] for p in sorted_pairs]
     values = [p[1] for p in sorted_pairs]
@@ -153,12 +153,12 @@ def create_feature_importance_chart(feature_names: list, importances: list, heig
         marker_color=COLORS["secondary"],
         text=[f"{v:.3f}" for v in values],
         textposition="auto",
-        textfont=dict(color="white", size=11, family="IBM Plex Sans, sans-serif"),
+        textfont=dict(**_TEXT_FONT, size=11),
     ))
     fig.update_layout(
         **CHART_LAYOUT_DEFAULTS,
         height=height,
-        xaxis=dict(title="Importance", gridcolor="#334155", zerolinecolor="#334155"),
-        yaxis=dict(gridcolor="#334155"),
+        xaxis=dict(title="Importance", **_AXIS_DEFAULTS),
+        yaxis=dict(**_AXIS_DEFAULTS),
     )
     return fig
