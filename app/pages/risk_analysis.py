@@ -17,6 +17,7 @@ from components.metric_cards import (
     render_priority_card,
     render_rich_text_card,
     render_disclaimer,
+    render_summary_grid,
 )
 from components.charts import create_factor_bar_chart, create_risk_gauge
 from components.styles import COLORS
@@ -29,13 +30,13 @@ def render_risk_analysis(locations, hazard_df, building_df):
         <div class="page-kicker">Interactive Evaluation</div>
         <h1 class="page-title">Risk Analizi</h1>
         <p class="page-summary">
-            Bina parametrelerini girin, deprem risk skoru ile inceleme önceliğini aynı akışta görün
-            ve etkili faktörleri görsel olarak yorumlayın.
+            Bina parametrelerini hazard bağlamı ile birleştirerek deprem risk skoru,
+            inceleme önceliği ve açıklanabilir faktör analizi üretin.
         </p>
         <div class="page-tags">
-            <span class="page-tag">Harita destekli karar ekranı</span>
-            <span class="page-tag">Açıklanabilir skor dağılımı</span>
-            <span class="page-tag">ML-ready tahmin katmanı</span>
+            <span class="page-tag">Hazard bağlamı</span>
+            <span class="page-tag">Açıklanabilir skor</span>
+            <span class="page-tag">İnceleme önceliği</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -53,12 +54,10 @@ def render_risk_analysis(locations, hazard_df, building_df):
         selected_loc = locations[selected_loc_id]
 
         st.markdown(
-            f'<div style="background:rgba(15,23,42,0.72); border:1px solid rgba(148,163,184,0.12); border-radius:14px; padding:0.6rem 0.8rem; margin-bottom:1rem;">'
-            f'<span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:9px; '
-            f'background:rgba(56,189,248,0.14); color:#8AD4FF; font-family:JetBrains Mono, monospace; font-size:0.72rem; margin-right:0.55rem;">LOC</span>'
-            f'<span style="color:#CBD5E1; font-size:0.85rem;">{selected_loc["district"]}, {selected_loc["city"]}</span>'
-            f'<span style="color:#64748B; font-size:0.75rem; margin-left:0.5rem;">'
-            f'{selected_loc["lat"]:.4f}, {selected_loc["lon"]:.4f}</span>'
+            f'<div class="rt-location-badge">'
+            f'<span class="rt-location-badge__icon">LOC</span>'
+            f'<span class="rt-location-badge__text">{selected_loc["district"]}, {selected_loc["city"]}</span>'
+            f'<span class="rt-location-badge__coords">{selected_loc["lat"]:.4f}, {selected_loc["lon"]:.4f}</span>'
             f'</div>',
             unsafe_allow_html=True,
         )
@@ -114,51 +113,49 @@ def render_risk_analysis(locations, hazard_df, building_df):
         else "ML pipeline hazır, heuristic öncelikli"
     )
 
-    st.markdown(
-        f"""
-        <div class="rt-card" style="padding:1rem 1.15rem; margin-bottom:1.2rem;">
-            <div style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:0.9rem;">
-                <div>
-                    <div class="summary-eyebrow">Seçili Lokasyon</div>
-                    <div class="summary-value" style="font-size:1.1rem;">{selected_name}</div>
-                    <div class="summary-caption">{selected_loc["district"]}, {selected_loc["city"]}</div>
+    # ── Anlık skor göstergesi (input panelinde) ──
+    risk_band = evaluation["risk_band"]
+    _risk_color = {"Düşük": "#40916C", "Orta": "#F28C28", "Yüksek": "#E63946"}.get(risk_band["label"], "#F28C28")
+    with col_input:
+        st.markdown(f"""
+        <div class="rt-card" style="margin-top:var(--rt-space-md); text-align:center; border-left:4px solid {_risk_color};">
+            <div style="font-size:2rem; font-weight:800; color:{_risk_color};">{evaluation["risk_score"]}</div>
+            <div style="font-size:0.8rem; font-weight:700; color:{_risk_color}; text-transform:uppercase; letter-spacing:0.1em;">{risk_band["label"]} Risk</div>
+            <div style="margin-top:0.5rem; display:flex; justify-content:space-around;">
+                <div style="text-align:center;">
+                    <div style="font-size:1.1rem; font-weight:700; color:var(--rt-text);">{evaluation["project_fit_score"]}</div>
+                    <div style="font-size:0.65rem; color:var(--rt-muted);">Uygunluk</div>
                 </div>
-                <div>
-                    <div class="summary-eyebrow">Tehlike Skoru</div>
-                    <div class="summary-value" style="font-size:1.35rem; color:#38BDF8;">{selected_loc["hazard_score"]}</div>
-                    <div class="summary-caption">{selected_loc["hazard_level"]} bandı</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Parametre Durumu</div>
-                    <div class="summary-value" style="font-size:1.1rem;">7 / 7</div>
-                    <div class="summary-caption">Karar girdisi tamamlandı</div>
-                </div>
-                <div>
-                    <div class="summary-eyebrow">Model Katmanı</div>
-                    <div class="summary-value" style="font-size:1.1rem; color:#22C55E;">{model_status}</div>
-                    <div class="summary-caption">{model_caption}</div>
+                <div style="text-align:center;">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--rt-text);">{evaluation["inspection_priority"]}</div>
+                    <div style="font-size:0.65rem; color:var(--rt-muted);">Öncelik</div>
                 </div>
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        """, unsafe_allow_html=True)
+
+    render_summary_grid([
+        {"eyebrow": "Seçili Lokasyon", "value": selected_name, "value_size": "var(--rt-text-lg)", "caption": f'{selected_loc["district"]}, {selected_loc["city"]}'},
+        {"eyebrow": "Tehlike Skoru", "value": selected_loc["hazard_score"], "value_size": "1.35rem", "value_color": "var(--rt-blue)", "caption": f'{selected_loc["hazard_level"]} bandı'},
+        {"eyebrow": "Parametre Durumu", "value": "7 / 7", "value_size": "var(--rt-text-lg)", "caption": "Karar girdisi tamamlandı"},
+        {"eyebrow": "Model Katmanı", "value": model_status, "value_size": "var(--rt-text-lg)", "value_color": "var(--rt-emerald)", "caption": model_caption},
+    ])
 
     # ── Harita ──
     with col_main:
         st.markdown('<div class="section-header">HARİTA</div>', unsafe_allow_html=True)
         st.markdown(
             f"""
-            <div class="rt-card" style="padding:0.95rem 1.1rem; margin-bottom:0.85rem;">
-                <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+            <div class="rt-card rt-card--compact">
+                <div class="rt-flex-bar">
                     <div>
                         <div class="summary-eyebrow">Coğrafi Bağlam</div>
-                        <div style="color:#F8FAFC; font-weight:700; font-size:0.98rem;">{selected_loc["district"]} / {selected_loc["city"]}</div>
+                        <div class="rt-accent-text" style="font-size:0.98rem;">{selected_loc["district"]} / {selected_loc["city"]}</div>
                         <div class="summary-caption">{selected_loc["lat"]:.4f}, {selected_loc["lon"]:.4f}</div>
                     </div>
                     <div>
                         <div class="summary-eyebrow">Risk Operasyonu</div>
-                        <div class="status-chip" style="background:rgba(56,189,248,0.12); border-color:rgba(56,189,248,0.28); color:#8AD4FF;">Canlı lokasyon odaklı yorum</div>
+                        <div class="status-chip status-chip--blue">Canlı lokasyon odaklı yorum</div>
                     </div>
                     <div>
                         <div class="summary-eyebrow">Okuma Notu</div>
@@ -185,10 +182,8 @@ def render_risk_analysis(locations, hazard_df, building_df):
         st_folium(risk_map, width=None, height=420, returned_objects=[])
 
     # ── Skor Kartları ──
-    st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-md"></div>', unsafe_allow_html=True)
     st.markdown('<div class="section-header">DEĞERLENDİRME SONUÇLARI</div>', unsafe_allow_html=True)
-
-    risk_band = evaluation["risk_band"]
     sc1, sc2, sc3 = st.columns(3)
     with sc1:
         render_score_card("Deprem Risk Skoru", evaluation["risk_score"],
@@ -199,26 +194,13 @@ def render_risk_analysis(locations, hazard_df, building_df):
         render_priority_card("İnceleme Önceliği", evaluation["inspection_priority"])
 
     # ── Faktör Analizi + Açıklama ──
-    st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-md"></div>', unsafe_allow_html=True)
     col_chart, col_explain = st.columns([1, 1])
 
     with col_chart:
         st.markdown('<div class="section-header">SKORA KATKI YAPAN FAKTÖRLER</div>', unsafe_allow_html=True)
         fig = create_factor_bar_chart(evaluation["sub_scores"])
         st.plotly_chart(fig, use_container_width=True)
-        st.markdown(
-            """
-            <div class="rt-card" style="padding:1rem 1.1rem;">
-                <div class="summary-eyebrow">Analist Notu</div>
-                <div style="color:#F8FAFC; font-weight:600; margin-bottom:0.35rem;">Katkı dağılımı doğrudan aksiyon önceliğine çevrilir.</div>
-                <div class="summary-caption">
-                    Grafikte öne çıkan faktörler, öneri kartındaki doğal dil açıklaması ile birebir hizalanır.
-                    Amaç sadece skor göstermek değil, karar gerekçesini görünür kılmaktır.
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
     with col_explain:
         st.markdown('<div class="section-header">AÇIKLAMA VE ÖNERİ</div>', unsafe_allow_html=True)
@@ -226,7 +208,7 @@ def render_risk_analysis(locations, hazard_df, building_df):
         render_rich_text_card(explanation)
         st.markdown(
             f"""
-            <div class="rt-card" style="padding:1rem 1.1rem;">
+            <div class="rt-card rt-card--compact">
                 <div class="summary-eyebrow">Operasyon Özeti</div>
                 <div class="metric-inline"><span class="metric-inline-label">Risk bandı</span><span class="metric-inline-value">{risk_band["label"]}</span></div>
                 <div class="metric-inline"><span class="metric-inline-label">İnceleme önceliği</span><span class="metric-inline-value">{evaluation["inspection_priority"]}</span></div>
@@ -237,54 +219,52 @@ def render_risk_analysis(locations, hazard_df, building_df):
         )
 
     # ── Veri Bileşenleri ──
-    st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="rt-spacer-md"></div>', unsafe_allow_html=True)
     st.markdown('<div class="section-header">VERİ BİLEŞENLERİ</div>', unsafe_allow_html=True)
 
     vb1, vb2, vb3, vb4 = st.columns(4)
     with vb1:
         st.markdown("""
-        <div class="rt-card" style="text-align:center; padding:1rem;">
-            <div style="color:#10B981; font-weight:600; font-size:0.8rem;">&#x2713; AFAD Tehlike</div>
-            <div style="color:#64748B; font-size:0.75rem; margin-top:0.25rem;">Risk çekirdeği</div>
+        <div class="rt-card rt-data-cell">
+            <div class="rt-data-cell__label rt-data-cell__label--active">&#x2713; AFAD Tehlike</div>
+            <div class="rt-data-cell__caption">Risk çekirdeği</div>
         </div>""", unsafe_allow_html=True)
     with vb2:
         st.markdown("""
-        <div class="rt-card" style="text-align:center; padding:1rem;">
-            <div style="color:#10B981; font-weight:600; font-size:0.8rem;">&#x2713; Zemin Sınıfı</div>
-            <div style="color:#64748B; font-size:0.75rem; margin-top:0.25rem;">Kritik hassasiyet girdisi</div>
+        <div class="rt-card rt-data-cell">
+            <div class="rt-data-cell__label rt-data-cell__label--active">&#x2713; Zemin Sınıfı</div>
+            <div class="rt-data-cell__caption">Kritik hassasiyet girdisi</div>
         </div>""", unsafe_allow_html=True)
     with vb3:
         st.markdown("""
-        <div class="rt-card" style="text-align:center; padding:1rem;">
-            <div style="color:#10B981; font-weight:600; font-size:0.8rem;">&#x2713; Yapı Özellikleri</div>
-            <div style="color:#64748B; font-size:0.75rem; margin-top:0.25rem;">Yapısal karar tabanı</div>
+        <div class="rt-card rt-data-cell">
+            <div class="rt-data-cell__label rt-data-cell__label--active">&#x2713; Yapı Özellikleri</div>
+            <div class="rt-data-cell__caption">Yapısal karar tabanı</div>
         </div>""", unsafe_allow_html=True)
     with vb4:
         st.markdown("""
-        <div class="rt-card" style="text-align:center; padding:1rem;">
-            <div style="color:#F59E0B; font-weight:600; font-size:0.8rem;">&#x25CB; Bağlam Verisi</div>
-            <div style="color:#64748B; font-size:0.75rem; margin-top:0.25rem;">İkinci faz genişleme</div>
+        <div class="rt-card rt-data-cell">
+            <div class="rt-data-cell__label rt-data-cell__label--pending">&#x25CB; Bağlam Verisi</div>
+            <div class="rt-data-cell__caption">İkinci faz genişleme</div>
         </div>""", unsafe_allow_html=True)
 
     # ── Baseline ML Insight (model varsa) ──
     if ml_result.get("prediction_method") == "ml":
-        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+        st.markdown('<div class="rt-spacer-md"></div>', unsafe_allow_html=True)
         st.markdown('<div class="section-header">BASELINE ML INSIGHT</div>', unsafe_allow_html=True)
         st.markdown(f"""
         <div class="rt-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="rt-ml-status">
                 <div>
-                    <div style="color:#0EA5E9; font-weight:600; font-size:0.85rem;">Model Status: Aktif</div>
-                    <div style="color:#94A3B8; font-size:0.8rem; margin-top:0.25rem;">
+                    <div class="rt-accent-text--blue" style="font-size:var(--rt-text-base);">Model Status: Aktif</div>
+                    <div class="summary-caption" style="margin-top:var(--rt-space-xs);">
                         Model: {ml_result.get('model_name', 'N/A')} |
                         Tahmin: {ml_result.get('ml_risk_label', 'N/A')} risk sınıfı
                     </div>
                 </div>
-                <div style="background:#1B2A4A; border-radius:8px; padding:0.5rem 1rem;">
-                    <div style="color:#F59E0B; font-size:0.7rem; text-transform:uppercase;">Experimental</div>
-                </div>
+                <div class="rt-ml-badge rt-ml-badge--untrained">Experimental</div>
             </div>
-            <div style="color:#64748B; font-size:0.75rem; margin-top:0.75rem; border-top:1px solid #334155; padding-top:0.5rem;">
+            <div class="rt-card__footer">
                 Not: Baseline model demo veri üzerinde heuristic skorlardan bootstrap edilmiştir.
                 Gerçek etiketli veri ile yeniden eğitim önerilir.
             </div>

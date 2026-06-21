@@ -38,6 +38,45 @@ SCORE_WEIGHTS = {
     "system": 0.15,
 }
 
+# ── Kritik (yapı-düzeyi) öznitelikler ──
+# Bunlar bina-düzeyi veri/saha gerektirir. Eksik olduklarında skor, konum-türevli
+# faktörler (hazard + soil) üzerinden yeniden normalize edilip "site-only" geçici
+# skor üretir ve kayıt "saha kontrolü gerekli" işaretlenir (tasarım ilkesi 10.3 + 10.5).
+CRITICAL_ATTRIBUTES = ["age", "floors", "system"]
+SITE_FACTORS = ["hazard", "soil"]
+
+# ── Katsayı Gerekçe Tablosu ──
+# Başkan/uzman savunması: ağırlıklar keyfi değil; literatürdeki hızlı tarama
+# yöntemlerine dayandırılmış uzman ön-değerleridir. Sonraki adım: AHP/uzman
+# kalibrasyonu + 2023 Kahramanmaraş hasar verisiyle doğrulama.
+COEFFICIENT_JUSTIFICATION = [
+    {
+        "factor": "hazard", "weight": 0.30,
+        "basis": "Sismik talep en temel belirleyici; taban skoru tasarım yer hareketi (MCER/PGA) üzerinden belirlenir.",
+        "source": "FEMA P-154 / P-155; TBDY-2018",
+    },
+    {
+        "factor": "soil", "weight": 0.25,
+        "basis": "Zemin amplifikasyonu talebi büyüten çarpan; yumuşak zeminler (ZD-ZF) tasarım spektrumunu artırır.",
+        "source": "FEMA P-154 (S_D/S_E); TBDY-2018 zemin sınıfı",
+    },
+    {
+        "factor": "age", "weight": 0.15,
+        "basis": "Yapım yılı yönetmelik neslini (kod düzeyi) belirler; pre-code yapı yüksek kırılganlık.",
+        "source": "FEMA P-154 (kod düzeyi); Sucuoğlu-Yakut 2008",
+    },
+    {
+        "factor": "floors", "weight": 0.15,
+        "basis": "Kat sayısı/yükseklik kütle ve periyodu artırır; rapid screening'de temel kırılganlık parametresi.",
+        "source": "FEMA P-154; Sucuoğlu-Yakut 2008; P25",
+    },
+    {
+        "factor": "system", "weight": 0.15,
+        "basis": "Taşıyıcı sistem türü yanal yük kapasitesini belirler (perde > çerçeve > yığma).",
+        "source": "FEMA P-154 (bina tipi); RISK-UE LM1",
+    },
+]
+
 # ── Risk Bandları ──
 RISK_BANDS = [
     {"min": 0, "max": 39, "label": "Düşük", "color": "#27ae60", "emoji": "🟢"},

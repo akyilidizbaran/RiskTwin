@@ -12,6 +12,7 @@ from src.config import (
     AGE_THRESHOLDS,
     FLOOR_THRESHOLDS,
     SYSTEM_SCORE_MAP,
+    CRITICAL_ATTRIBUTES,
 )
 
 
@@ -58,21 +59,37 @@ def get_sub_scores(
     floor_count: int = 5,
     structural_system: str = "betonarme_cerceve",
 ) -> Dict[str, float]:
-    """Tüm alt skorları hesapla ve sözlük olarak döndür."""
-    return {
+    """
+    Tüm alt skorları hesapla ve sözlük olarak döndür.
+    Konum-türevli faktörler (hazard, soil) her zaman üretilir. Yapı-düzeyi
+    parametreler (age/floors/system) None ise EKSİK kabul edilir ve sözlüğe
+    eklenmez; böylece risk skoru yalnız mevcut faktörler üzerinden hesaplanır
+    (tasarım ilkesi 10.3 — eksik veriyi 0/güvenli gibi gösterme).
+    """
+    sub_scores: Dict[str, float] = {
         "hazard": _score_hazard(hazard_level, hazard_score),
         "soil": _score_soil(soil_class),
-        "age": _score_age(building_age),
-        "floors": _score_floors(floor_count),
-        "system": _score_system(structural_system),
     }
+    if building_age is not None:
+        sub_scores["age"] = _score_age(building_age)
+    if floor_count is not None:
+        sub_scores["floors"] = _score_floors(floor_count)
+    if structural_system is not None:
+        sub_scores["system"] = _score_system(structural_system)
+    return sub_scores
 
 
 def calculate_risk_score(sub_scores: Dict[str, float]) -> float:
-    """Ağırlıklı risk skoru hesapla (0-100)."""
-    score = sum(
-        sub_scores.get(k, 0) * w for k, w in SCORE_WEIGHTS.items()
-    )
+    """
+    Ağırlıklı risk skoru hesapla (0-100).
+    Yalnız mevcut faktörler üzerinden ağırlıklar yeniden normalize edilir; böylece
+    eksik bir faktör skoru yapay olarak düşürmez. Tüm faktörler mevcutsa (toplam
+    ağırlık = 1.0) sonuç klasik ağırlıklı ortalamayla aynıdır.
+    """
+    total_w = sum(SCORE_WEIGHTS[k] for k in sub_scores if k in SCORE_WEIGHTS)
+    if total_w == 0:
+        return 0.0
+    score = sum(sub_scores[k] * SCORE_WEIGHTS[k] for k in sub_scores if k in SCORE_WEIGHTS) / total_w
     return round(max(0, min(100, score)), 1)
 
 
@@ -175,6 +192,25 @@ def evaluate_building(
     fit_score = calculate_project_fit_score(risk_score, is_existing_building, retrofit_status)
     priority_level, priority_text = get_inspection_priority(risk_score, is_existing_building)
 
+    # ── Veri tamlığı / eksik-veri görünürlüğü (tasarım ilkesi 10.3) ──
+    missing_structural = [k for k in CRITICAL_ATTRIBUTES if k not in sub_scores]
+    present_structural = [k for k in CRITICAL_ATTRIBUTES if k in sub_scores]
+    completeness = round(len(present_structural) / len(CRITICAL_ATTRIBUTES), 2)
+    needs_field_check = bool(missing_structural)
+    if not missing_structural:
+        data_status = "tam"
+    elif present_structural:
+        data_status = "kismi"
+    else:
+        data_status = "site_only"  # yalnız konum (hazard+soil) bilgisi var
+    triage_note = (
+        "Kritik yapı verisi eksik — risk skoru konuma dayalı geçicidir; saha kontrolü gerekli."
+        if needs_field_check else
+        "Envanter verisi tam; risk skoru tüm faktörleri içerir."
+    )
+    # Güven, şimdilik tamlıktan türetilir; sonraki adım: öznitelik-başı kalibre güven (conformal).
+    confidence = completeness
+
     return {
         "sub_scores": sub_scores,
         "risk_score": risk_score,
@@ -184,4 +220,11 @@ def evaluate_building(
         "inspection_recommendation": priority_text,
         "is_existing_building": is_existing_building,
         "retrofit_status": retrofit_status,
+        # ── eksik-veri / provenans katmanı ──
+        "completeness": completeness,
+        "confidence": confidence,
+        "data_status": data_status,
+        "missing_structural": missing_structural,
+        "needs_field_check": needs_field_check,
+        "triage_note": triage_note,
     }

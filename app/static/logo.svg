@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <!-- Kalkan şekli -->
+  <path d="M20 2 L36 10 L36 22 C36 30 28 37 20 38 C12 37 4 30 4 22 L4 10 Z" fill="#1B4332" stroke="none"/>
+  <!-- İç kalkan -->
+  <path d="M20 5 L33 12 L33 22 C33 28.5 26.5 34.5 20 35.5 C13.5 34.5 7 28.5 7 22 L7 12 Z" fill="#2D6A4F" stroke="none"/>
+  <!-- Deprem dalgası (zigzag) -->
+  <polyline points="12,22 16,16 18,24 20,14 22,24 24,16 28,22" fill="none" stroke="#F28C28" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Üst nokta (bina sembolü) -->
+  <rect x="18" y="8" width="4" height="5" rx="0.5" fill="#40916C" opacity="0.9"/>
+  <rect x="19" y="9" width="0.8" height="1.2" rx="0.2" fill="#1B4332"/>
+  <rect x="20.2" y="9" width="0.8" height="1.2" rx="0.2" fill="#1B4332"/>
+  <rect x="19" y="11" width="0.8" height="1.2" rx="0.2" fill="#1B4332"/>
+  <rect x="20.2" y="11" width="0.8" height="1.2" rx="0.2" fill="#1B4332"/>
+</svg>
